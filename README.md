@@ -14,14 +14,27 @@ AI Army の動画制作から始まり、枝分かれして基盤モデルと複
 
 | パス | 役割 |
 | --- | --- |
+| `AGENTS.md` | 継続作業の実行指示。各タスク完了後の次タスク選定と中断時の記録 |
+| `agent.md` | `AGENTS.md` への参照 |
+| `docs/AUTONOMY_STATE.md` | 再開用の現在地、障害、次の実行可能な課題 |
 | `AUTONOMY_CHARTER.md` | 自律運用の憲章。許可範囲、禁止事項、停止条件 |
-| `docs/` | 設計、工程、教訓。現行の正本は `docs/news_v2_process.md`（VM 側の原本を取り込み予定） |
-| `loop/` | 自律ループの実行器（予定）。ジョブの投入、再投入、ログ保存 |
-| `workspaces/` | 各 AI の作業場所（予定） |
-| `evals/` | 成果の検証基準とテスト（予定） |
+| `docs/` | 設計、工程、教訓 |
+| `tools/github_preflight.py` | GitHub CLI・ブランチ・送信先・公開承認の読み取り専用チェック |
+| `docs/GITHUB_WORKFLOW.md` | GitHub CLIと認証済みアプリによる送信・確認手順 |
+| `tools/ai_env.py` | オフラインで使えるプロジェクト・タスク台帳 |
+| `tests/` | 台帳の回帰テスト |
+| `workspaces/` | 将来の隔離作業領域 |
 
-## 現状
+## 今すぐ使う
 
-- 2026-10-16 時点で、リモートも含めてリポジトリは空です。
-- 動画制作の正本（台本、音声、描画スクリプト）は VM `instance-20261001-071545` にあり、まだ取り込んでいません。
-- 自律ループはまだ起動していません。指示文の確定後に起動します。
+Python 3.10 以降、追加パッケージ不要です。
+
+```sh
+python3 tools/ai_env.py init
+python3 tools/ai_env.py project add --name "字幕チェック" --objective "字幕の欠落を減らす"
+python3 tools/ai_env.py task add --project 字幕チェック --title "要件を整理" --acceptance "受入条件が記録されている"
+python3 tools/ai_env.py task list --project 字幕チェック
+python3 tools/ai_env.py export --project 字幕チェック
+```
+
+現状、自律ループ、24時間常駐、独自基盤モデル学習は未実装です。動画制作VMの正本ファイルも未取り込みです。課金なし・公開なしを維持し、検証と記録を積み上げてから機能を広げます。
